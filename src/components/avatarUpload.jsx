@@ -32,11 +32,11 @@ export const AvatarUpload = ({ setAvatarFile }) => {
   return (
     <div className="flex items-center gap-[15px] mb-[46px]">
       {previewUrl ? (
-        <div className="w-[100px] h-[100px] rounded-full flex items-center justify-center border border-[#fff]">
+        <div className="w-[100px] h-[100px] rounded-full overflow-hidden border border-[#fff]">
           <img
             src={previewUrl}
             alt="Avatar preview"
-            className="w-[98px] h-[98px] rounded-full "
+            className="w-full h-full object-cover"
           />
         </div>
       ) : (
@@ -60,7 +60,7 @@ export const AvatarUpload = ({ setAvatarFile }) => {
       </p>
       {previewUrl ? (
         <p
-          className="text-sm text-[#3e424a] hover:text-[#10151f] leading-[21px] cursor-pointer"
+          className="text-sm text-[#ff4000] hover:opacity-80 leading-[21px] cursor-pointer"
           onClick={handleRemove}
         >
           Remove
