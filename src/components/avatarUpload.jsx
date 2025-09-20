@@ -23,6 +23,12 @@ export const AvatarUpload = ({ setAvatarFile, error, setErrors }) => {
         }));
         return;
       }
+      // updates the errors state in order to triger avatar error
+      setErrors((prev) => ({
+        ...prev,
+        avatar: "",
+      }));
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreviewUrl(e.target?.result);
