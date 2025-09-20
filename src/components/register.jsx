@@ -76,70 +76,47 @@ export const RegisterForm = () => {
         </h1>
       </div>
       <form onSubmit={handleSubmit} className="" id="register">
-        <div>
-          <AvatarUpload
-            setAvatarFile={setAvatarFile}
-            errors={errors}
-            setErrors={setErrors}
-          />
-          {errors.avatar && (
-            <p className="text-sm text-destructive">{errors.avatar}</p>
-          )}
-        </div>
+        <AvatarUpload
+          setAvatarFile={setAvatarFile}
+          error={errors.avatar ?? ""}
+          setErrors={setErrors}
+        />
+        <FloatingInput
+          id="username"
+          type="text"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleInputChange("username")}
+          error={errors.username ?? ""}
+        />
+        <FloatingInput
+          id="email"
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange("email")}
+          error={errors.email ?? ""}
+        />
 
-        <div className="space-y-1">
-          <FloatingInput
-            id="username"
-            type="text"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleInputChange("username")}
-          />
-          {errors.username && (
-            <p className="text-sm text-destructive">{errors.username}</p>
-          )}
-        </div>
+        <FloatingInput
+          id="password"
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange("password")}
+          showPasswordToggle={true}
+          error={errors.password ?? ""}
+        />
 
-        <div className="space-y-1">
-          <FloatingInput
-            id="email"
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleInputChange("email")}
-          />
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email}</p>
-          )}
-        </div>
-
-        <div className="space-y-1">
-          <FloatingInput
-            id="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange("password")}
-            showPasswordToggle={true}
-          />
-          {errors.password && (
-            <p className="text-sm text-destructive">{errors.password}</p>
-          )}
-        </div>
-
-        <div className="space-y-1">
-          <FloatingInput
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleInputChange("confirmPassword")}
-            showPasswordToggle={true}
-          />
-          {errors.confirmPassword && (
-            <p className="text-sm text-destructive">{errors.confirmPassword}</p>
-          )}
-        </div>
+        <FloatingInput
+          id="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          value={formData.confirmPassword}
+          onChange={handleInputChange("confirmPassword")}
+          showPasswordToggle={true}
+          error={errors.confirmPassword ?? ""}
+        />
       </form>
 
       <div className="flex flex-col gap-6 mt-[-24px]">

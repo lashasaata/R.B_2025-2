@@ -7,13 +7,13 @@ export const FloatingInput = ({
   placeholder,
   value,
   onChange,
+  error = "",
   required = false,
   showPasswordToggle = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const isFloating = isFocused || value.length > 0;
   const inputType = showPasswordToggle && showPassword ? "text" : type;
 
   const togglePasswordVisibility = () => {
@@ -21,7 +21,7 @@ export const FloatingInput = ({
   };
 
   return (
-    <div className="relative mb-6">
+    <div className="relative flex flex-col gap-[2px] h-[66px]">
       <div
         className={`
       absolute left-3 px-1 bg-white transition-all duration-300 ease-in-out
@@ -29,7 +29,7 @@ export const FloatingInput = ({
       ${
         isFocused || value.length > 0
           ? "top-[-8px] left-[8px] text-xs text-muted-foreground"
-          : "top-1/2 -translate-y-1/2 text-sm text-[#3e424a]"
+          : "top-[21px] -translate-y-1/2 text-sm text-[#3e424a]"
       }
     `}
       >
@@ -44,14 +44,16 @@ export const FloatingInput = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         required={required}
-        className="w-full h-12 px-4 border border-[#e1dfe1] rounded-lg bg-white focus:outline-none focus:border-ring transition-all duration-300"
+        className={`${
+          error ? "border-[#FF4000]" : "border-[#e1dfe1]"
+        } "w-full h-[42px] px-4 border rounded-lg bg-white focus:outline-none focus:border-ring transition-all duration-300`}
       />
 
       {showPasswordToggle && (
         <button
           type="button"
           onClick={togglePasswordVisibility}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-[21px] transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
           tabIndex={-1}
         >
           {showPassword ? (
@@ -60,6 +62,13 @@ export const FloatingInput = ({
             <Eye className="w-5 h-5" />
           )}
         </button>
+      )}
+      {error ? (
+        <span className="text-[10px] text-[#FF4000] font-[300] leading-[15px] ml-[6px]">
+          {error}
+        </span>
+      ) : (
+        ""
       )}
     </div>
   );

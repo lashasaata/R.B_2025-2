@@ -59,32 +59,23 @@ export const LoginForm = () => {
         </h1>
       </div>
       <form onSubmit={handleSubmit} className="" id="login">
-        <div className="space-y-1">
-          <FloatingInput
-            id="email"
-            type="text"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleInputChange("email")}
-          />
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email}</p>
-          )}
-        </div>
-
-        <div className="space-y-1">
-          <FloatingInput
-            id="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange("password")}
-            showPasswordToggle={true}
-          />
-          {errors.password && (
-            <p className="text-sm text-destructive">{errors.password}</p>
-          )}
-        </div>
+        <FloatingInput
+          id="email"
+          type="text"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange("email")}
+          error={errors.email ?? ""}
+        />
+        <FloatingInput
+          id="password"
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange("password")}
+          showPasswordToggle={true}
+          error={errors.password ?? ""}
+        />
       </form>
       <div className="flex flex-col gap-6 mt-[-24px]">
         <button

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-export const AvatarUpload = ({ setAvatarFile, setErrors }) => {
+export const AvatarUpload = ({ setAvatarFile, error, setErrors }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -46,7 +46,7 @@ export const AvatarUpload = ({ setAvatarFile, setErrors }) => {
   };
 
   return (
-    <div className="flex items-center gap-[15px] mb-[46px]">
+    <div className="flex gap-[15px] mb-[46px]">
       {previewUrl ? (
         <div className="w-[100px] h-[100px] rounded-full overflow-hidden border border-[#fff]">
           <img
@@ -56,7 +56,11 @@ export const AvatarUpload = ({ setAvatarFile, setErrors }) => {
           />
         </div>
       ) : (
-        <div className="flex items-center justify-center w-[100px] h-[100px] rounded-full border  border-[#E1DFE1]">
+        <div
+          className={`${
+            error ? "border-[#ff4000]" : "border-[#E1DFE1]"
+          } flex items-center justify-center w-[100px] h-[100px] rounded-full border`}
+        >
           <img src="/camera.svg" alt="Upload" className="w-5 h-5 " />
         </div>
       )}
@@ -68,22 +72,33 @@ export const AvatarUpload = ({ setAvatarFile, setErrors }) => {
         onChange={handleFileSelect}
         className="hidden"
       />
-      <p
-        className="text-sm text-[#3e424a] hover:text-[#10151f] leading-[21px] cursor-pointer"
-        onClick={handleClick}
-      >
-        {previewUrl ? "Upload new" : "Upload image"}
-      </p>
-      {previewUrl ? (
-        <p
-          className="text-sm text-[#ff4000] hover:opacity-80 leading-[21px] cursor-pointer"
-          onClick={handleRemove}
-        >
-          Remove
-        </p>
-      ) : (
-        ""
-      )}
+      <div className="flex flex-col gap-2 mt-10">
+        <div className="flex items-center gap-[15px]">
+          <p
+            className="text-sm text-[#3e424a] hover:text-[#10151f] leading-[21px] cursor-pointer"
+            onClick={handleClick}
+          >
+            {previewUrl ? "Upload new" : "Upload image"}
+          </p>
+          {previewUrl ? (
+            <p
+              className="text-sm text-[#ff4000] hover:opacity-80 leading-[21px] cursor-pointer"
+              onClick={handleRemove}
+            >
+              Remove
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
+        {error ? (
+          <span className="text-[10px] text-[#FF4000] font-[300] leading-[15px]">
+            {error}
+          </span>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };
