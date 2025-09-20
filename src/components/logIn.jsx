@@ -29,13 +29,13 @@ export const LoginForm = () => {
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Email is invalid";
     }
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 3) {
+      newErrors.password = "Password must be at least 3 characters";
     }
 
     setErrors(newErrors);
@@ -58,7 +58,7 @@ export const LoginForm = () => {
           Log in
         </h1>
       </div>
-      <form onSubmit={handleSubmit} className="" id="register">
+      <form onSubmit={handleSubmit} className="" id="login">
         <div className="space-y-1">
           <FloatingInput
             id="email"
@@ -66,10 +66,9 @@ export const LoginForm = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange("email")}
-            required
           />
-          {errors.username && (
-            <p className="text-sm text-destructive">{errors.username}</p>
+          {errors.email && (
+            <p className="text-sm text-destructive">{errors.email}</p>
           )}
         </div>
 
@@ -81,17 +80,16 @@ export const LoginForm = () => {
             value={formData.password}
             onChange={handleInputChange("password")}
             showPasswordToggle={true}
-            required
           />
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email}</p>
+          {errors.password && (
+            <p className="text-sm text-destructive">{errors.password}</p>
           )}
         </div>
       </form>
       <div className="flex flex-col gap-6 mt-[-24px]">
         <button
           type="submit"
-          form="register"
+          form="login"
           className="w-full rounded-[10px] bg-[#ff4000] py-[10px] text-sm text-[#fff] leading-[21px] cursor-pointer"
         >
           Log in

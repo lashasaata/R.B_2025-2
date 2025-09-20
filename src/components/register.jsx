@@ -28,21 +28,26 @@ export const RegisterForm = () => {
     }
   };
 
+  console.log(errors, formData);
+
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.username.trim()) {
       newErrors.username = "Username is required";
+    } else if (formData.username.length < 3) {
+      newErrors.username = "Username must be at least 3 characters";
     }
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Email is invalid";
     }
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 3) {
+      newErrors.password = "Password must be at least 3 characters";
     }
     if (!formData.confirmPassword.trim()) {
       newErrors.confirmPassword = "Please confirm your password";
@@ -71,7 +76,16 @@ export const RegisterForm = () => {
         </h1>
       </div>
       <form onSubmit={handleSubmit} className="" id="register">
-        <AvatarUpload setAvatarFile={setAvatarFile} />
+        <div>
+          <AvatarUpload
+            setAvatarFile={setAvatarFile}
+            errors={errors}
+            setErrors={setErrors}
+          />
+          {errors.avatar && (
+            <p className="text-sm text-destructive">{errors.avatar}</p>
+          )}
+        </div>
 
         <div className="space-y-1">
           <FloatingInput
@@ -80,7 +94,6 @@ export const RegisterForm = () => {
             placeholder="Username"
             value={formData.username}
             onChange={handleInputChange("username")}
-            required
           />
           {errors.username && (
             <p className="text-sm text-destructive">{errors.username}</p>
@@ -94,7 +107,6 @@ export const RegisterForm = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange("email")}
-            required
           />
           {errors.email && (
             <p className="text-sm text-destructive">{errors.email}</p>
@@ -109,7 +121,6 @@ export const RegisterForm = () => {
             value={formData.password}
             onChange={handleInputChange("password")}
             showPasswordToggle={true}
-            required
           />
           {errors.password && (
             <p className="text-sm text-destructive">{errors.password}</p>
@@ -124,7 +135,6 @@ export const RegisterForm = () => {
             value={formData.confirmPassword}
             onChange={handleInputChange("confirmPassword")}
             showPasswordToggle={true}
-            required
           />
           {errors.confirmPassword && (
             <p className="text-sm text-destructive">{errors.confirmPassword}</p>

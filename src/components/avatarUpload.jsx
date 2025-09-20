@@ -1,12 +1,28 @@
 import { useRef, useState } from "react";
 
-export const AvatarUpload = ({ setAvatarFile }) => {
+export const AvatarUpload = ({ setAvatarFile, setErrors }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleFileSelect = (event) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        setErrors((prev) => ({
+          ...prev,
+          avatar: "Please upload an image file.",
+        }));
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSize) {
+        setErrors((prev) => ({
+          ...prev,
+          avatar: "File is too large! Max 2MB allowed.",
+        }));
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreviewUrl(e.target?.result);
