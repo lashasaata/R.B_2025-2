@@ -7,7 +7,7 @@ export const AvatarUpload = ({ setAvatarFile, error, setErrors }) => {
   const handleFileSelect = (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
+      if (!["image/png", "image/jpeg"].includes(file.type)) {
         setErrors((prev) => ({
           ...prev,
           avatar: "Please upload an image file.",
@@ -24,10 +24,7 @@ export const AvatarUpload = ({ setAvatarFile, error, setErrors }) => {
         return;
       }
       // updates the errors state in order to triger avatar error
-      setErrors((prev) => ({
-        ...prev,
-        avatar: "",
-      }));
+      setErrors((prev) => ({}));
 
       const reader = new FileReader();
       reader.onload = (e) => {
