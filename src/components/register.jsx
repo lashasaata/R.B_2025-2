@@ -3,13 +3,18 @@ import { FloatingInput } from "./FloatingInput";
 import { AvatarUpload } from "./AvatarUpload";
 import { useNavigate } from "react-router";
 
+import { registerUser } from "../api/auth";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
   });
   const [avatarFile, setAvatarFile] = useState(null);
   const [errors, setErrors] = useState({});
@@ -49,23 +54,40 @@ export const RegisterForm = () => {
     } else if (formData.password.length < 3) {
       newErrors.password = "Password must be at least 3 characters";
     }
-    if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.password_confirmation.trim()) {
+      newErrors.password_confirmation = "Please confirm your password";
+    } else if (formData.password !== formData.password_confirmation) {
+      newErrors.password_confirmation = "Passwords do not match";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", { ...formData, avatar: avatarFile });
-      // Here you would typically send the data to your backend
-      alert("Registration successful! Check the console for form data.");
+    // if (Object.keys(errors).length > 0) return;
+    if (!validateForm()) return;
+
+    const values = new FormData();
+    if (avatarFile) values.append("avatar", avatarFile);
+    values.append("email", formData.email);
+    values.append("username", formData.username);
+    values.append("password", formData.password);
+    values.append("password_confirmation", formData.password_confirmation);
+
+    const result = await registerUser(values);
+
+    if (result.status != 200) {
+      //failed message
+      toast.error(result.data?.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
     }
+
+    navigate("/");
   };
 
   return (
@@ -112,10 +134,10 @@ export const RegisterForm = () => {
           id="confirmPassword"
           type="password"
           placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleInputChange("confirmPassword")}
+          value={formData.password_confirmation}
+          onChange={handleInputChange("password_confirmation")}
           showPasswordToggle={true}
-          error={errors.confirmPassword ?? ""}
+          error={errors.password_confirmation ?? ""}
         />
       </form>
 
@@ -137,6 +159,7 @@ export const RegisterForm = () => {
           </button>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };

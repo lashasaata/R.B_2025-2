@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { FloatingInput } from "./floatingInput";
 import { useNavigate } from "react-router";
+import { loginUser } from "../api/auth";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -42,13 +46,25 @@ export const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", { ...formData, avatar: avatarFile });
-      // Here you would typically send the data to your backend
-      alert("Registration successful! Check the console for form data.");
+    if (!validateForm()) return;
+
+    // setIsLoading(true);
+
+    const result = await loginUser(formData);
+    // setIsLoading(false);
+    console.log(result);
+
+    if (result.status != 200) {
+      //failed message
+      toast.error(result.data?.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
     }
+    navigate("/");
   };
 
   return (
@@ -95,6 +111,7 @@ export const LoginForm = () => {
           </button>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };
