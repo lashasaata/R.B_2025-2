@@ -2,12 +2,13 @@ import { FloatingInput } from "./floatingInput";
 import { useState } from "react";
 
 function Price(props) {
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState(false);
 
   const handleInputChange = (field) => (e) => {
+    const value = e.target.value.replace(/\D/g, "");
     props.setPrices((prev) => ({
       ...prev,
-      [field]: e.target.value,
+      [field]: value,
     }));
 
     // Clear error when user starts typing
@@ -17,6 +18,41 @@ function Price(props) {
         [field]: "",
       }));
     }
+  };
+
+  const handleApply = async (e) => {
+    e.preventDefault();
+
+    if (Number(props.prices.from) > Number(props.prices.to)) {
+      setErrors(true);
+      return;
+    } else {
+      setErrors(false);
+    }
+
+    const values = new FormData();
+    // values.append("email", formData.email);
+    // values.append("username", formData.username);
+    // values.append("password", formData.password);
+    // values.append("password_confirmation", formData.password_confirmation);
+
+    // if (result.status != 200) {
+    //   //failed message
+    //   toast.error(result.data?.message, {
+    //     position: "top-right",
+    //     autoClose: 2000,
+    //   });
+    //   return;
+    // }
+    console.log(props);
+    props.setModals({
+      filter: false,
+      sort: false,
+    });
+    props.setPrices({
+      from: "",
+      to: "",
+    });
   };
 
   return (
@@ -51,9 +87,12 @@ function Price(props) {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-[#FF4000]">
-            {Object.keys(errors).length > 0 ? "Wrong value placemet" : ""}
+            {errors ? "Wrong value placemet" : ""}
           </span>
-          <button className="bg-[#ff4000] rounded-[10px] px-[42px] py-[10px] text-sm text-[#fff] cursor-pointer">
+          <button
+            className="bg-[#ff4000] rounded-[10px] px-[42px] py-[10px] text-sm text-[#fff] cursor-pointer"
+            onClick={handleApply}
+          >
             Apply
           </button>
         </div>
