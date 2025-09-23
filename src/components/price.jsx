@@ -3,56 +3,48 @@ import { useState } from "react";
 
 function Price(props) {
   const [errors, setErrors] = useState(false);
+  const [values, setValues] = useState({
+    from: "",
+    to: "",
+  });
 
   const handleInputChange = (field) => (e) => {
     const value = e.target.value.replace(/\D/g, "");
-    props.setPrices((prev) => ({
-      ...prev,
+    setValues(() => ({
+      ...values,
       [field]: value,
     }));
 
     // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({
-        ...prev,
-        [field]: "",
-      }));
-    }
+    setErrors(false);
   };
 
   const handleApply = async (e) => {
     e.preventDefault();
 
-    if (Number(props.prices.from) > Number(props.prices.to)) {
-      setErrors(true);
-      return;
+    if (values.from == "" && values.to == "") {
+      props.setModals({
+        filter: false,
+        sort: false,
+      });
     } else {
-      setErrors(false);
+      if (Number(values.from) > Number(values.to) && values.to != "") {
+        setErrors(true);
+        return;
+      } else {
+        setErrors(false);
+      }
+
+      props.setModals({
+        filter: false,
+        sort: false,
+      });
+      setValues({
+        from: "",
+        to: "",
+      });
+      props.setPrices(values);
     }
-
-    const values = new FormData();
-    // values.append("email", formData.email);
-    // values.append("username", formData.username);
-    // values.append("password", formData.password);
-    // values.append("password_confirmation", formData.password_confirmation);
-
-    // if (result.status != 200) {
-    //   //failed message
-    //   toast.error(result.data?.message, {
-    //     position: "top-right",
-    //     autoClose: 2000,
-    //   });
-    //   return;
-    // }
-    console.log(props);
-    props.setModals({
-      filter: false,
-      sort: false,
-    });
-    props.setPrices({
-      from: "",
-      to: "",
-    });
   };
 
   return (
@@ -66,7 +58,7 @@ function Price(props) {
             <FloatingInput
               id="from"
               type="text"
-              value={props.prices.from}
+              value={values.from}
               placeholder="From"
               onChange={handleInputChange("from")}
               required={false}
@@ -77,7 +69,7 @@ function Price(props) {
             <FloatingInput
               id="to"
               type="text"
-              value={props.prices.to}
+              value={values.to}
               placeholder="to"
               onChange={handleInputChange("to")}
               required={false}
