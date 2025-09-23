@@ -7,8 +7,9 @@ export const FloatingInput = ({
   placeholder,
   value,
   onChange,
+  width,
   error = "",
-  required = false,
+  required = true,
   showPasswordToggle = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -21,7 +22,11 @@ export const FloatingInput = ({
   };
 
   return (
-    <div className="relative flex flex-col gap-[2px] h-[66px]">
+    <div
+      className={`relative ${
+        width ? `w-[${width}px]` : ""
+      } flex flex-col gap-[2px] h-[66px]`}
+    >
       <div
         className={`
       absolute left-3 px-1 bg-white transition-all duration-300 ease-in-out
@@ -33,7 +38,8 @@ export const FloatingInput = ({
       }
     `}
       >
-        {placeholder} <span className="text-sm text-[#FF4000]">*</span>
+        {placeholder}
+        {required && <span className="text-sm text-[#FF4000]">*</span>}
       </div>
 
       <input
@@ -43,7 +49,6 @@ export const FloatingInput = ({
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        required={required}
         className={`${
           error ? "border-[#FF4000]" : "border-[#e1dfe1]"
         } "w-full h-[42px] px-4 border rounded-lg bg-white focus:outline-none focus:border-ring transition-all duration-300`}
