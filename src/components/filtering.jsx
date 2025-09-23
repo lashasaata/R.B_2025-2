@@ -35,7 +35,7 @@ function Filtering() {
     };
   }, [setModals]);
   return (
-    <section>
+    <section className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <h1 className="text-[42px] text-[#10151f] leading-[63px] font-semibold">
           Products
@@ -49,13 +49,7 @@ function Filtering() {
           <div ref={filterRef} className="relative">
             <div
               className="flex items-center gap-2 cursor-pointer"
-              onClick={() => {
-                setModals({ ...modals, filter: !modals.filter });
-                setPrices({
-                  from: "",
-                  to: "",
-                });
-              }}
+              onClick={() => setModals({ ...modals, filter: !modals.filter })}
             >
               <img src="/filter.svg" alt="" />
               <span className="text-base text-[#10151f] leading-[18px]">
@@ -92,6 +86,30 @@ function Filtering() {
           </div>
         </section>
       </div>
+      {prices.from || prices.to ? (
+        <section className="flex">
+          <div className="flex items-center gap-[6px] border border-[#e1dfe1] rounded-[50px] py-2 pl-4 pr-[10px]">
+            <span className="text-sm text-[#3e424a] leading-[21px]">
+              Price:{" "}
+              {prices.from == prices.to
+                ? prices.from
+                : prices.from == ""
+                ? "<" + prices.to
+                : prices.to == ""
+                ? ">" + prices.from
+                : prices.from + "-" + prices.to}
+            </span>
+            <img
+              src="/x-mark.svg"
+              alt="Delete"
+              className="cursor-pointer"
+              onClick={() => setPrices({ from: "", to: "" })}
+            />
+          </div>
+        </section>
+      ) : (
+        ""
+      )}
     </section>
   );
 }
