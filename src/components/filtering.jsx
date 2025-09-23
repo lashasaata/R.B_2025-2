@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Price from "./price";
+import Sort from "./sort";
 
 function Filtering() {
   const [modals, setModals] = useState({
@@ -10,14 +11,21 @@ function Filtering() {
     from: "",
     to: "",
   });
+  const [sortValue, setSortValue] = useState({ default: "created_at" });
 
   const filterRef = useRef(null);
+  const sortRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
+      // outside clicking closes the modal
+
       if (filterRef.current && !filterRef.current.contains(event.target)) {
-        // outside clicking closes the modal
         setModals((prev) => ({ ...prev, filter: false }));
+      }
+
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setModals((prev) => ({ ...prev, sort: false }));
       }
     }
 
@@ -62,11 +70,25 @@ function Filtering() {
               />
             )}
           </div>
-          <div className="flex items-center gap-1 cursor-pointer">
-            <span className="text-base text-[#10151f] leading-[18px]">
-              Sort by
-            </span>
-            <img src="/chevron-down.svg" alt="" />
+          <div ref={sortRef} className="relative">
+            <div
+              className="flex items-center gap-1 cursor-pointer"
+              onClick={() => setModals({ ...modals, sort: !modals.sort })}
+            >
+              <span className="text-base text-[#10151f] leading-[18px]">
+                {Object.keys(sortValue)[0] == "default"
+                  ? "Sort by"
+                  : Object.keys(sortValue)[0]}
+              </span>
+              <img src="/chevron-down.svg" alt="" />
+            </div>
+            {modals.sort && (
+              <Sort
+                sortValue={sortValue}
+                setSortValue={setSortValue}
+                setModals={setModals}
+              />
+            )}
           </div>
         </section>
       </div>
