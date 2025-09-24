@@ -45,10 +45,11 @@ function Price(props) {
       });
       props.setPrices(values);
     }
+    props.setPage(1);
   };
 
   return (
-    <section className="cursor-default absolute top-[34px] right-[-16px] w-[392px] flex flex-col gap-6 p-4 border border-[#e1dfe1] rounded-[8px]">
+    <section className="cursor-default absolute top-[34px] right-[-16px] w-[392px] flex flex-col gap-6 p-4 border border-[#e1dfe1] rounded-[8px] bg-[#fff]">
       <h2 className="text-base text-[#10151f] leading-[26px] font-semibold">
         Select price
       </h2>

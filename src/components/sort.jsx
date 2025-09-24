@@ -5,10 +5,11 @@ function Sort(props) {
       price: false,
       sort: false,
     });
+    props.setPage(1);
   };
 
   return (
-    <section className="cursor-default absolute top-[34px] right-0 w-[223px] flex flex-col gap-2 py-4 border border-[#e1dfe1] rounded-[8px]">
+    <section className="cursor-default absolute top-[34px] right-0 w-[223px] flex flex-col gap-2 py-4 border border-[#e1dfe1] rounded-[8px] bg-[#fff]">
       <h2 className="text-base text-[#10151f] leading-[26px] font-semibold px-4">
         Sort by
       </h2>
@@ -21,13 +22,13 @@ function Sort(props) {
         </li>
         <li
           className="px-4 py-2 text-base text-[#10151f] leading-[24px] cursor-pointer hover:bg-[#928d8d]"
-          onClick={() => handleApply("Price, low to high", "Price")}
+          onClick={() => handleApply("Price, low to high", "price")}
         >
           Price, low to high
         </li>
         <li
           className="px-4 py-2 text-base text-[#10151f] leading-[24px] cursor-pointer hover:bg-[#928d8d]"
-          onClick={() => handleApply("Price, high to low", "-Price")}
+          onClick={() => handleApply("Price, high to low", "-price")}
         >
           Price, high to low
         </li>

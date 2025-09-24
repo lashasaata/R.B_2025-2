@@ -2,16 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import Price from "./price";
 import Sort from "./sort";
 
-function Filtering() {
+function Filtering(props) {
   const [modals, setModals] = useState({
     filter: false,
     sort: false,
   });
-  const [prices, setPrices] = useState({
-    from: "",
-    to: "",
-  });
-  const [sortValue, setSortValue] = useState({ default: "created_at" });
 
   const filterRef = useRef(null);
   const sortRef = useRef(null);
@@ -43,7 +38,18 @@ function Filtering() {
         <section className="flex items-center gap-8">
           <div className="pr-8 border-r border-[#e1dfe1] text-center">
             <span className="text-xs text-[#3e424a] leading-[18px]">
-              Showing x from y results
+              {props.meta ? (
+                <>
+                  Showing{" "}
+                  {props.meta.from === props.meta.to
+                    ? props.meta.from
+                    : `${props.meta.from}-${props.meta.to}`}{" "}
+                  of {props.meta.total}{" "}
+                  {props.meta.total < 2 ? "result" : "results"}
+                </>
+              ) : (
+                "Loading..."
+              )}
             </span>
           </div>
           <div ref={filterRef} className="relative">
@@ -58,9 +64,10 @@ function Filtering() {
             </div>
             {modals.filter && (
               <Price
-                prices={prices}
-                setPrices={setPrices}
+                prices={props.prices}
+                setPrices={props.setPrices}
                 setModals={setModals}
+                setPage={props.setPage}
               />
             )}
           </div>
@@ -70,40 +77,44 @@ function Filtering() {
               onClick={() => setModals({ ...modals, sort: !modals.sort })}
             >
               <span className="text-base text-[#10151f] leading-[18px]">
-                {Object.keys(sortValue)[0] == "default"
+                {Object.keys(props.sortValue)[0] == "default"
                   ? "Sort by"
-                  : Object.keys(sortValue)[0]}
+                  : Object.keys(props.sortValue)[0]}
               </span>
               <img src="/chevron-down.svg" alt="" />
             </div>
             {modals.sort && (
               <Sort
-                sortValue={sortValue}
-                setSortValue={setSortValue}
+                sortValue={props.sortValue}
+                setSortValue={props.setSortValue}
                 setModals={setModals}
+                setPage={props.setPage}
               />
             )}
           </div>
         </section>
       </div>
-      {prices.from || prices.to ? (
+      {props.prices.from || props.prices.to ? (
         <section className="flex">
           <div className="flex items-center gap-[6px] border border-[#e1dfe1] rounded-[50px] py-2 pl-4 pr-[10px]">
             <span className="text-sm text-[#3e424a] leading-[21px]">
               Price:{" "}
-              {prices.from == prices.to
-                ? prices.from
-                : prices.from == ""
-                ? "<" + prices.to
-                : prices.to == ""
-                ? ">" + prices.from
-                : prices.from + "-" + prices.to}
+              {props.prices.from == props.prices.to
+                ? props.prices.from
+                : props.prices.from == ""
+                ? "<" + props.prices.to
+                : props.prices.to == ""
+                ? ">" + props.prices.from
+                : props.prices.from + "-" + props.prices.to}
             </span>
             <img
               src="/x-mark.svg"
               alt="Delete"
               className="cursor-pointer"
-              onClick={() => setPrices({ from: "", to: "" })}
+              onClick={() => {
+                props.setPrices({ from: "", to: "" });
+                props.setPage(1);
+              }}
             />
           </div>
         </section>
