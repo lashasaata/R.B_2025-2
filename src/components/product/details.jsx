@@ -1,10 +1,24 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Details({ product, current, setCurrent }) {
   const color = product?.available_colors?.[current] || null;
   const [size, setSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState(false);
+
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("user"));
+    if (saved && Object.keys(saved)) {
+      setToken(saved.token);
+    }
+  }, []);
 
   const quantityRef = useRef(null);
 
@@ -24,6 +38,20 @@ function Details({ product, current, setCurrent }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const addToCart = () => {
+    if (!size || !color || !product.quantity) {
+      toast.error("Product is out of stock", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+  };
 
   return (
     <div className="w-[704px] flex flex-col gap-[56px]">
@@ -144,7 +172,10 @@ function Details({ product, current, setCurrent }) {
       </aside>
 
       {/* add to cart */}
-      <button className="flex items-center justify-center gap-[10px] py-4 rounded-[10px] bg-[#ff4000] hover:cursor-pointer hover:opacity-80">
+      <button
+        className="flex items-center justify-center gap-[10px] py-4 rounded-[10px] bg-[#ff4000] hover:cursor-pointer hover:opacity-80"
+        onClick={addToCart}
+      >
         <img src="/shopping-cart.svg" alt="" />
         <span className="text-xl text-[#fff] font-medium">Add to cart</span>
       </button>
@@ -168,6 +199,7 @@ function Details({ product, current, setCurrent }) {
           </p>
         </div>
       </footer>
+      <ToastContainer />
     </div>
   );
 }
