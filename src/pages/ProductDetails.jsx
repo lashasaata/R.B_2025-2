@@ -24,7 +24,12 @@ function ProductDetails() {
       </div>
       <div className="w-full flex justify-between">
         <Carousel product={product} current={current} setCurrent={setCurrent} />
-        <Details product={product} current={current} setCurrent={setCurrent} />
+        <Details
+          product={product}
+          current={current}
+          setCurrent={setCurrent}
+          id={id}
+        />
       </div>
     </div>
   );

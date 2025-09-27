@@ -3,8 +3,9 @@ import { useNavigate } from "react-router";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addToCart } from "../../api/cart";
 
-function Details({ product, current, setCurrent }) {
+function Details({ product, current, setCurrent, id }) {
   const color = product?.available_colors?.[current] || null;
   const [size, setSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -39,7 +40,7 @@ function Details({ product, current, setCurrent }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const addToCart = () => {
+  const addItem = async () => {
     if (!size || !color || !product.quantity) {
       toast.error("Product is out of stock", {
         position: "top-right",
@@ -50,6 +51,25 @@ function Details({ product, current, setCurrent }) {
     if (!token) {
       navigate("/login");
       return;
+    }
+    const apiData = {
+      quantity: quantity,
+      color: color,
+      size: size,
+    };
+
+    const result = await addToCart(apiData, id);
+
+    if (result.status == 201) {
+      toast.success("Product has added to the cart", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } else {
+      toast.error(result.statusText, {
+        position: "top-right",
+        autoClose: 2000,
+      });
     }
   };
 
@@ -174,7 +194,7 @@ function Details({ product, current, setCurrent }) {
       {/* add to cart */}
       <button
         className="flex items-center justify-center gap-[10px] py-4 rounded-[10px] bg-[#ff4000] hover:cursor-pointer hover:opacity-80"
-        onClick={addToCart}
+        onClick={addItem}
       >
         <img src="/shopping-cart.svg" alt="" />
         <span className="text-xl text-[#fff] font-medium">Add to cart</span>
