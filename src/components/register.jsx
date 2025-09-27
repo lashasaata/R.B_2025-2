@@ -86,6 +86,15 @@ export const RegisterForm = () => {
       });
       return;
     }
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        email: result.data?.user.email,
+        avatar: result.data?.user.avatar,
+        name: result.data?.user.username,
+        token: result.data?.token,
+      })
+    );
 
     navigate("/");
   };
