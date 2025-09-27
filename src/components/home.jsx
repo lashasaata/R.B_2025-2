@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Filtering from "./filtering";
 import { getProducts } from "../api/products";
-import { data } from "react-router";
+import { data, useNavigate } from "react-router";
 import Pagination from "./pagination";
 
 function Home() {
+  const navigate = useNavigate();
   const [prices, setPrices] = useState({
     from: "",
     to: "",
@@ -49,7 +50,11 @@ function Home() {
       <section className="grid grid-cols-4 gap-x-[16px] gap-y-[40px]">
         {products.data?.map((e, index) => {
           return (
-            <div key={index} className="flex flex-col gap-3 cursor-pointer">
+            <div
+              key={index}
+              className="flex flex-col gap-3 cursor-pointer"
+              onClick={() => navigate(`/products/${e.id}`)}
+            >
               <img src={e.cover_image} alt="" className="" />
               <p className="text-xl text-[#10151f] leading-[27px] font-medium">
                 {e.name}
