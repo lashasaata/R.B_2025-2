@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FloatingInput } from "./FloatingInput";
+import { FloatingInput } from "./floatingInput";
 import { AvatarUpload } from "./AvatarUpload";
 import { useNavigate } from "react-router";
 
