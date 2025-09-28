@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { FloatingInput } from "./floatingInput";
-import { AvatarUpload } from "./avatarUpload";
 import { useNavigate } from "react-router";
-
 import { registerUser } from "../api/auth";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FloatingInput } from "./floatingInput";
+import { AvatarUpload } from "./avatarUpload";
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
