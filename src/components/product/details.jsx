@@ -5,6 +5,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "../../api/cart";
 
+// const colorMap = {
+//   "Navy Blue": "#001f3f",
+//   Beige: "#f5f5dc",
+//   Cream: "#fffdd0",
+//   Peach: "#ffe5b4",
+//   "Off White": "#f8f8ff",
+//   Magenta: "#ff00ff",
+//   Khaki: "#c3b091",
+//   Multi: "linear-gradient(45deg, red, blue, green)",
+// };
+const colorMap = {
+  Multi: "linear-gradient(45deg, #cc0000, #000099, #008000)",
+  "Navy blue": "#001933",
+  Beige: "#d9d2b0",
+  Cream: "#e6e0c0",
+  Peach: "#e6bfa1",
+  "Off white": "#dcdcdc",
+  Magenta: "#cc00cc",
+  Khaki: "#a39275",
+};
+
+function getColor(name) {
+  return colorMap[name] || name;
+}
+
 function Details({ product, current, setCurrent, id }) {
   const color = product?.available_colors?.[current] || null;
   const [size, setSize] = useState(null);
@@ -95,7 +120,7 @@ function Details({ product, current, setCurrent, id }) {
                       current === index && c == "White"
                         ? `1px solid #e1dfe1`
                         : current === index
-                        ? `1px solid ${c}`
+                        ? `1px solid ${getColor(c)}`
                         : "1px solid transparent",
                   }}
                   onClick={() => {
@@ -108,7 +133,7 @@ function Details({ product, current, setCurrent, id }) {
                     className={`${
                       c === "White" ? "border border-[#e1dfe1]" : ""
                     } w-[38px] h-[38px] rounded-full hover:opacity-80 hover:cursor-pointer`}
-                    style={{ backgroundColor: c }}
+                    style={{ background: getColor(c) }}
                   ></div>
                 </div>
               ))
