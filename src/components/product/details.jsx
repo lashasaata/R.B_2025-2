@@ -44,6 +44,14 @@ function Details({ product, current, setCurrent, id }) {
     }
   }, [product]);
 
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   useEffect(() => {
     //closes the modal when clicked outside
     function handleClickOutside(event) {
@@ -73,7 +81,7 @@ function Details({ product, current, setCurrent, id }) {
       size: size,
     };
 
-    const result = await addToCart(apiData, id);
+    const result = await addToCart(apiData, id, user.token);
 
     if (result.status == 201) {
       toast.success("Product has added to the cart", {
