@@ -19,7 +19,7 @@ function ProductDetails() {
 
   return (
     <div className="flex flex-col px-[100px]">
-      <div className="text-sm text-[#10151f] font-light mt-[30px] mb-[50px]">
+      <div className="text-sm text-[#10151f] font-light mt-[10px] mb-[30px]">
         Listing / Product
       </div>
       <div className="w-full flex justify-between">

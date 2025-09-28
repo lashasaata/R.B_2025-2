@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import CartModal from "./cartModal";
+import Cart from "./cart";
+import { getCart } from "../api/cart";
 
 function Header() {
   const [user, setUser] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [cart, setCart] = useState(false);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("user"));
@@ -12,6 +17,15 @@ function Header() {
       setUser({ avatar: saved.avatar, name: saved.name });
     }
   }, [location]);
+
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    const request = async () => {
+      const result = await getCart();
+      setItems(result);
+    };
+    request();
+  }, [cart]);
 
   return (
     <header className="w-full flex items-center justify-between px-[100px] py-[28px]">
@@ -24,7 +38,12 @@ function Header() {
 
       {user ? (
         <div className="flex items-center gap-5">
-          <img src="/cart.svg" alt="Cart" />
+          <img
+            src="/cart.svg"
+            alt="Cart"
+            className="hover:cursor-pointer"
+            onClick={() => setCart(true)}
+          />
           {user.avatar ? (
             <img
               src={user.avatar}
@@ -52,6 +71,11 @@ function Header() {
             {location.pathname === "/login" ? "Sign up" : "Log in"}
           </span>
         </label>
+      )}
+      {cart && (
+        <CartModal setCart={setCart} items={items}>
+          <Cart items={items} setCart={setCart} />
+        </CartModal>
       )}
     </header>
   );
