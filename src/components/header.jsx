@@ -22,6 +22,7 @@ function Header() {
   useEffect(() => {
     const request = async () => {
       const result = await getCart();
+
       setItems(result);
     };
     request();

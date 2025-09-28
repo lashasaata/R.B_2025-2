@@ -25,18 +25,20 @@ export async function addToCart(payload, productId) {
 
 export async function getCart() {
   const user = await JSON.parse(localStorage.getItem("user"));
-  try {
-    const response = await axios.get(`${API_URL}cart`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+  if (user) {
+    try {
+      const response = await axios.get(`${API_URL}cart`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-    console.log("Got cart items:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error getting cart:", error.response || error.message);
-    return error.response;
+      console.log("Got cart items:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error getting cart:", error.response || error.message);
+      return error.response;
+    }
   }
 }
 

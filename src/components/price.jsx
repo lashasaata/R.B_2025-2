@@ -54,7 +54,7 @@ function Price(props) {
         Select price
       </h2>
       <div className="flex flex-col gap-[10px]">
-        <div className="flex items-center gap-[10px]">
+        <div className="w-[300px] flex items-center gap-[10px]">
           <div className="flex-1">
             <FloatingInput
               id="from"
