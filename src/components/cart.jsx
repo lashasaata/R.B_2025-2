@@ -93,10 +93,13 @@ function Cart({
             } flex flex-col gap-9 overflow-scroll`}
           >
             {items?.map((e) => {
+              const indexOfColor = e.available_colors.findIndex(
+                (item) => item === e.color
+              );
               return (
                 <section className="w-full flex gap-[17px]">
                   <img
-                    src={e.cover_image}
+                    src={e.images[indexOfColor]}
                     alt="Product"
                     className="w-[100px] h-[134px] rounded-[10px] border border-[#e1dfe1]"
                   />
