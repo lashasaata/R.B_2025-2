@@ -1,8 +1,19 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Plus, Minus } from "lucide-react";
+import { checkout } from "../api/cart";
 
-function Cart({ items, setCart }) {
+function Cart({
+  items,
+  setItems,
+  setCart,
+  formData,
+  setFormData,
+  setErrors,
+  preEmail,
+  setPaid,
+}) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const subTotal = () => {
     let sum = 0;
@@ -11,11 +22,76 @@ function Cart({ items, setCart }) {
     });
     return sum;
   };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!formData.surname.trim()) {
+      newErrors.surname = "Surname is required";
+    }
+    if (formData.email == "") {
+      // let use registration email
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!formData.address.trim()) {
+      newErrors.address = "Address is required";
+    }
+    if (!formData.zip_code.trim()) {
+      newErrors.zip_code = "Zip code is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    // setIsLoading(true);
+    let data = {};
+    if (formData.email == "") {
+      data = { ...formData, email: preEmail };
+    } else {
+      data = { ...formData };
+    }
+
+    const result = await checkout(data);
+
+    console.log(result);
+
+    if (result.status == 200) {
+      setPaid(true);
+      setItems([]);
+      setFormData({
+        name: "",
+        surname: "",
+        email: "",
+        address: "",
+        zip_code: "",
+      });
+    }
+
+    console.log(result);
+  };
   return (
-    <section className="h-full">
+    <section
+      className={
+        location.pathname === "/checkout" ? "h-full w-[460px]" : "h-full"
+      }
+    >
       {items?.length > 0 ? (
         <div className="flex flex-col justify-between gap-[80px]">
-          <div className="flex flex-col gap-9 max-h-[550px] overflow-scroll">
+          <div
+            className={`${
+              location.pathname === "/checkout"
+                ? "h-[310px] max-h-[310px]"
+                : "h-[550px] max-h-[550px]"
+            } flex flex-col gap-9 overflow-scroll`}
+          >
             {items?.map((e) => {
               return (
                 <section className="w-full flex gap-[17px]">
@@ -56,7 +132,11 @@ function Cart({ items, setCart }) {
               );
             })}
           </div>
-          <div className="flex flex-col gap-[102px]">
+          <div
+            className={`${
+              location.pathname === "/checkout" ? "gap-[80px]" : "gap-[102px]"
+            } flex flex-col`}
+          >
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="text-base text-[#3e424a] leading-[24px] ">
@@ -83,15 +163,25 @@ function Cart({ items, setCart }) {
                 </span>
               </div>
             </div>
-            <button
-              className="w-full py-4 rounded-[10px] border bg-[#ff4000] text-[#fff] text-lg font-medium cursor-pointer hover:opacity-80"
-              onClick={() => {
-                navigate("/checkout");
-                setCart(false);
-              }}
-            >
-              Go to checkout
-            </button>
+            {location.pathname === "/checkout" ? (
+              <button
+                form="checkout"
+                className="w-full py-4 rounded-[10px] border bg-[#ff4000] text-[#fff] text-lg font-medium cursor-pointer hover:opacity-80"
+                onClick={handleSubmit}
+              >
+                Pay
+              </button>
+            ) : (
+              <button
+                className="w-full py-4 rounded-[10px] border bg-[#ff4000] text-[#fff] text-lg font-medium cursor-pointer hover:opacity-80"
+                onClick={() => {
+                  navigate("/checkout");
+                  setCart(false);
+                }}
+              >
+                Go to checkout
+              </button>
+            )}
           </div>
         </div>
       ) : (
