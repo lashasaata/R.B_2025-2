@@ -31,8 +31,6 @@ export const RegisterForm = () => {
     }
   };
 
-  console.log(errors, formData);
-
   const validateForm = () => {
     const newErrors = {};
 

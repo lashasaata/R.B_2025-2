@@ -61,8 +61,6 @@ function Cart({
 
     const result = await checkout(data);
 
-    console.log(result);
-
     if (result.status == 200) {
       setPaid(true);
       setItems([]);
@@ -74,8 +72,6 @@ function Cart({
         zip_code: "",
       });
     }
-
-    console.log(result);
   };
   return (
     <section

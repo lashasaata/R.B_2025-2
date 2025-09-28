@@ -50,11 +50,7 @@ export const LoginForm = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // setIsLoading(true);
-
     const result = await loginUser(formData);
-    // setIsLoading(false);
-    console.log(result);
 
     if (result.status != 200) {
       //failed message
