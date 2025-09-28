@@ -42,7 +42,11 @@ function Header() {
             src="/cart.svg"
             alt="Cart"
             className="hover:cursor-pointer"
-            onClick={() => setCart(true)}
+            onClick={() => {
+              if (location.pathname !== "/checkout") {
+                setCart(true);
+              }
+            }}
           />
           {user.avatar ? (
             <img

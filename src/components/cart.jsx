@@ -18,7 +18,7 @@ function Cart({
   const subTotal = () => {
     let sum = 0;
     items.forEach((num) => {
-      sum += num.price;
+      sum += num.price * num.quantity;
     });
     return sum;
   };
@@ -92,12 +92,12 @@ function Cart({
                 : "h-[550px] max-h-[550px]"
             } flex flex-col gap-9 overflow-scroll`}
           >
-            {items?.map((e) => {
+            {items?.map((e, index) => {
               const indexOfColor = e.available_colors.findIndex(
                 (item) => item === e.color
               );
               return (
-                <section className="w-full flex gap-[17px]">
+                <section className="w-full flex gap-[17px]" key={index}>
                   <img
                     src={e.images[indexOfColor]}
                     alt="Product"
@@ -109,7 +109,7 @@ function Cart({
                         {e.name}
                       </p>
                       <span className="text-lg text-[#10151f] leading-[27px] font-semibold">
-                        $ {e.price}
+                        $ {e.price * e.quantity}
                       </span>
                     </div>
                     <span className="text-xs text-[#3e424a] leading-[18px]">
@@ -122,7 +122,7 @@ function Cart({
                       <div className="flex items-center gap-[7px] px-2 py-1 rounded-[22px] border border-[#e1dfe1]">
                         <Minus className="h-4 w-4 text-[#3e424a] hover:text-red-800 hover:cursor-pointer" />
                         <span className="text-xs text-[#3e424a] leading-[18px]">
-                          1
+                          {e.quantity}
                         </span>
                         <Plus className="h-4 w-4 text-[#3e424a] hover:text-blue-800 hover:cursor-pointer" />
                       </div>

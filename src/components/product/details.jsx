@@ -5,23 +5,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "../../api/cart";
 
-// const colorMap = {
-//   "Navy Blue": "#001f3f",
-//   Beige: "#f5f5dc",
-//   Cream: "#fffdd0",
-//   Peach: "#ffe5b4",
-//   "Off White": "#f8f8ff",
-//   Magenta: "#ff00ff",
-//   Khaki: "#c3b091",
-//   Multi: "linear-gradient(45deg, red, blue, green)",
-// };
 const colorMap = {
   Multi: "linear-gradient(45deg, #cc0000, #000099, #008000)",
   "Navy blue": "#001933",
   Beige: "#d9d2b0",
   Cream: "#e6e0c0",
   Peach: "#e6bfa1",
-  "Off white": "#dcdcdc",
+  "Off White": "#dcdcdc",
   Magenta: "#cc00cc",
   Khaki: "#a39275",
 };

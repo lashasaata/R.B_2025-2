@@ -6,12 +6,34 @@ import Pagination from "./pagination";
 
 function Home() {
   const navigate = useNavigate();
-  const [prices, setPrices] = useState({
-    from: "",
-    to: "",
+  const [prices, setPrices] = useState(() => {
+    const saved = localStorage.getItem("prices");
+    return saved ? JSON.parse(saved) : { from: "", to: "" };
   });
-  const [sortValue, setSortValue] = useState({ default: "-created_at" });
-  const [page, setPage] = useState(1);
+
+  const [sortValue, setSortValue] = useState(() => {
+    const saved = localStorage.getItem("sortValue");
+    return saved ? JSON.parse(saved) : { default: "-created_at" };
+  });
+
+  const [page, setPage] = useState(() => {
+    const saved = localStorage.getItem("page");
+    return saved ? JSON.parse(saved) : 1;
+  });
+
+  // save on change
+  useEffect(() => {
+    localStorage.setItem("prices", JSON.stringify(prices));
+  }, [prices]);
+
+  useEffect(() => {
+    localStorage.setItem("sortValue", JSON.stringify(sortValue));
+  }, [sortValue]);
+
+  useEffect(() => {
+    localStorage.setItem("page", JSON.stringify(page));
+  }, [page]);
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

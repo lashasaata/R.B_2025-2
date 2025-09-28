@@ -3,8 +3,10 @@ import Cart from "../components/cart";
 import CheckForm from "../components/checkForm";
 import { useState, useEffect } from "react";
 import Congrats from "../components/congrats";
+import { useNavigate } from "react-router";
 
 function Checkout() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -27,8 +29,9 @@ function Checkout() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user.email) {
-      navigate("/");
+    if (!user?.email) {
+      navigate("/login");
+      return;
     }
     setPreEmail(user.email);
   }, []);

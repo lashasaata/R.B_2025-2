@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getCart } from "../api/cart";
 
 export default function CartModal({ setCart, items, children }) {
   useEffect(() => {
@@ -12,7 +11,7 @@ export default function CartModal({ setCart, items, children }) {
 
   const getTotalQ = () => {
     let total = 0;
-    items.forEach((element) => {
+    items?.forEach((element) => {
       if (element.quantity) {
         total += element.quantity;
       }
