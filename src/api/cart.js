@@ -1,9 +1,8 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
+const user = JSON.parse(localStorage.getItem("user"));
 
 export async function addToCart(payload, productId) {
-  const user = JSON.parse(localStorage.getItem("user"));
-
   try {
     const response = await axios.post(
       `${API_URL}cart/products/${productId}/`,
@@ -25,8 +24,6 @@ export async function addToCart(payload, productId) {
 }
 
 export async function getCart() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user.token);
   try {
     const response = await axios.get(`${API_URL}cart`, {
       headers: {
@@ -42,4 +39,18 @@ export async function getCart() {
   }
 }
 
-getCart();
+export async function checkout(payload) {
+  try {
+    const response = await axios.post(`${API_URL}cart/checkout`, payload, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    console.log("Checkouted:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error checking out:", error.response || error.message);
+    return error.response;
+  }
+}
