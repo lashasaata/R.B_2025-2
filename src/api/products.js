@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://api.redseam.redberryinternship.ge/api/";
 
 export async function getProducts(data) {
   try {

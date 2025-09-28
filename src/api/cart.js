@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://api.redseam.redberryinternship.ge/api/";
 const user = JSON.parse(localStorage.getItem("user"));
 
 export async function addToCart(payload, productId) {
