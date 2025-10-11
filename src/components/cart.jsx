@@ -6,6 +6,7 @@ function Cart({
   items,
   setItems,
   changeQuantity,
+  deleteItem,
   setCart,
   formData,
   setFormData,
@@ -145,7 +146,10 @@ function Cart({
                           }
                         />
                       </div>
-                      <span className="text-xs text-[#3e424a] leading-[18px] opacity-80 cursor-pointer hover:opacity-100">
+                      <span
+                        className="text-xs text-[#3e424a] leading-[18px] opacity-80 cursor-pointer hover:opacity-100"
+                        onClick={() => deleteItem(e.id, e.color, e.size)}
+                      >
                         Remove
                       </span>
                     </div>

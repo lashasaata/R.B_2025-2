@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CartModal from "./cartModal";
 import Cart from "./cart";
-import { getCart, updateCart } from "../api/cart";
+import { getCart, updateCart, deleteProduct } from "../api/cart";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -56,6 +56,21 @@ function Header() {
         console.error("Failed to update quantity:", err);
         await loadCart();
       }
+    }
+  }
+
+  async function deleteItem(productId, color, size) {
+    setItems((prev) =>
+      prev.filter(
+        (i) => i.id !== productId || i.color !== color || i.size !== size
+      )
+    );
+
+    try {
+      await deleteProduct(productId, color, size);
+    } catch (err) {
+      console.error("Failed to delete item:", err);
+      setCart(items);
     }
   }
 
@@ -114,6 +129,7 @@ function Header() {
             items={items}
             setCart={setCart}
             changeQuantity={changeQuantity}
+            deleteItem={deleteItem}
           />
         </CartModal>
       )}

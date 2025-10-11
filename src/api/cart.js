@@ -68,6 +68,32 @@ export async function updateCart(id, quantity, color, size) {
   }
 }
 
+export async function deleteProduct(id, color, size) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    try {
+      const response = await axios.delete(`${API_URL}cart/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        data: {
+          color: color,
+          size: size,
+        },
+      });
+
+      console.log("Product has been removed:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error removing the product:",
+        error.response || error.message
+      );
+      return error.response;
+    }
+  }
+}
+
 export async function checkout(payload) {
   const user = await JSON.parse(localStorage.getItem("user"));
   try {
