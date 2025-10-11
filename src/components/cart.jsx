@@ -5,6 +5,7 @@ import { checkout } from "../api/cart";
 function Cart({
   items,
   setItems,
+  changeQuantity,
   setCart,
   formData,
   setFormData,
@@ -118,11 +119,31 @@ function Cart({
                     </span>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-[7px] px-2 py-1 rounded-[22px] border border-[#e1dfe1]">
-                        <Minus className="h-4 w-4 text-[#3e424a] hover:text-red-800 hover:cursor-pointer" />
+                        <Minus
+                          className="h-4 w-4 text-[#3e424a] hover:text-red-800 hover:cursor-pointer"
+                          onClick={() =>
+                            changeQuantity(
+                              e.id,
+                              e.quantity - 1,
+                              e.color,
+                              e.size
+                            )
+                          }
+                        />
                         <span className="text-xs text-[#3e424a] leading-[18px]">
                           {e.quantity}
                         </span>
-                        <Plus className="h-4 w-4 text-[#3e424a] hover:text-blue-800 hover:cursor-pointer" />
+                        <Plus
+                          className="h-4 w-4 text-[#3e424a] hover:text-blue-800 hover:cursor-pointer"
+                          onClick={() =>
+                            changeQuantity(
+                              e.id,
+                              e.quantity + 1,
+                              e.color,
+                              e.size
+                            )
+                          }
+                        />
                       </div>
                       <span className="text-xs text-[#3e424a] leading-[18px] opacity-80 cursor-pointer hover:opacity-100">
                         Remove

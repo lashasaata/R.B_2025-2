@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CartModal from "./cartModal";
 import Cart from "./cart";
-import { getCart } from "../api/cart";
+import { getCart, updateCart } from "../api/cart";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -30,14 +30,34 @@ function Header() {
   }, [location]);
 
   const [items, setItems] = useState([]);
-  useEffect(() => {
-    const request = async () => {
-      const result = await getCart();
 
-      setItems(result);
-    };
-    request();
-  }, [cart]);
+  async function loadCart() {
+    const res = await getCart();
+    setItems(res);
+  }
+
+  useEffect(() => {
+    loadCart();
+  }, []);
+
+  async function changeQuantity(productId, newQty, color, size) {
+    if (newQty > 0 && newQty <= 250) {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === productId && item.color == color && item.size == size
+            ? { ...item, quantity: newQty }
+            : item
+        )
+      );
+
+      try {
+        await updateCart(productId, newQty, color, size);
+      } catch (err) {
+        console.error("Failed to update quantity:", err);
+        await loadCart();
+      }
+    }
+  }
 
   return (
     <header className="w-full flex items-center justify-between px-[100px] py-[28px]">
@@ -90,7 +110,11 @@ function Header() {
       )}
       {cart && (
         <CartModal setCart={setCart} items={items}>
-          <Cart items={items} setCart={setCart} />
+          <Cart
+            items={items}
+            setCart={setCart}
+            changeQuantity={changeQuantity}
+          />
         </CartModal>
       )}
     </header>

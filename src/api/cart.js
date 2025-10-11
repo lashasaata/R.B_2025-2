@@ -42,6 +42,32 @@ export async function getCart() {
   }
 }
 
+export async function updateCart(id, quantity, color, size) {
+  const user = await JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    try {
+      const response = await axios.patch(
+        `${API_URL}cart/products/${id}`,
+        { quantity: quantity, color: color, size: size },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      console.log("Cart updated:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error updating the cart:",
+        error.response || error.message
+      );
+      return error.response;
+    }
+  }
+}
+
 export async function checkout(payload) {
   const user = await JSON.parse(localStorage.getItem("user"));
   try {
