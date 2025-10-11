@@ -9,7 +9,7 @@ export async function addToCart(payload, productId) {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -19,7 +19,7 @@ export async function addToCart(payload, productId) {
     return response;
   } catch (error) {
     console.error("Add to cart failed:", error.response?.data || error.message);
-    throw error;
+    return error;
   }
 }
 
@@ -47,7 +47,7 @@ export async function checkout(payload) {
   try {
     const response = await axios.post(`${API_URL}cart/checkout`, payload, {
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
       },
     });
 

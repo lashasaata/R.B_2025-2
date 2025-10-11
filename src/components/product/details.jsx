@@ -81,7 +81,7 @@ function Details({ product, current, setCurrent, id }) {
       size: size,
     };
 
-    const result = await addToCart(apiData, id, user.token);
+    const result = await addToCart(apiData, id);
 
     if (result.status == 201) {
       toast.success("Product has added to the cart", {
@@ -93,6 +93,7 @@ function Details({ product, current, setCurrent, id }) {
         position: "top-right",
         autoClose: 2000,
       });
+      navigate("/login");
     }
   };
 

@@ -41,6 +41,8 @@ function Cart({
     }
     if (!formData.zip_code.trim()) {
       newErrors.zip_code = "Zip code is required";
+    } else if (!/^\d+$/.test(formData.zip_code)) {
+      newErrors.zip_code = "Zip code must contain only numbers";
     }
 
     setErrors(newErrors);

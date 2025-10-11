@@ -12,10 +12,21 @@ function Header() {
   const [cart, setCart] = useState(false);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("user"));
-    if (saved && Object.keys(saved).length > 0) {
-      setUser({ avatar: saved.avatar, name: saved.name });
-    }
+    const updateUser = () => {
+      const saved = JSON.parse(localStorage.getItem("user"));
+      if (saved && Object.keys(saved).length > 0) {
+        setUser({ avatar: saved.avatar, name: saved.name });
+      } else {
+        setUser(null);
+      }
+    };
+
+    updateUser(); // run once at start
+
+    // listen for changes in localStorage (including DevTools)
+    window.addEventListener("storage", updateUser);
+
+    return () => window.removeEventListener("storage", updateUser);
   }, [location]);
 
   const [items, setItems] = useState([]);

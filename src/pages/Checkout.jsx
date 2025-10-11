@@ -37,6 +37,23 @@ function Checkout() {
   }, []);
 
   const [paid, setPaid] = useState(false);
+
+  useEffect(() => {
+    const updateUser = () => {
+      const saved = JSON.parse(localStorage.getItem("user"));
+      if (!saved || Object.keys(saved).length == 0) {
+        navigate("/");
+      }
+    };
+
+    updateUser(); // run once at start
+
+    // listen for changes in localStorage (including DevTools)
+    window.addEventListener("storage", updateUser);
+
+    return () => window.removeEventListener("storage", updateUser);
+  }, []);
+
   return (
     <div className="flex flex-col gap-[42px] px-[100px] mt-[72px]">
       <h1 className="text-[42px] text-[#10151f] font-semibold">Checkout</h1>

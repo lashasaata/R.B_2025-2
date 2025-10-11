@@ -23,9 +23,8 @@ export const FloatingInput = ({
 
   return (
     <div
-      className={`relative ${
-        width ? `w-[${width}px]` : ""
-      } flex flex-col gap-[2px] h-[66px]`}
+      className="relative flex flex-col gap-[2px] h-[66px]"
+      style={{ width: `${width}px` }}
     >
       <div
         className={`
