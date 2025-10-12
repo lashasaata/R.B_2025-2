@@ -38,7 +38,7 @@ function Header() {
 
   useEffect(() => {
     loadCart();
-  }, []);
+  }, [cart]);
 
   async function changeQuantity(productId, newQty, color, size) {
     if (newQty > 0 && newQty <= 250) {
